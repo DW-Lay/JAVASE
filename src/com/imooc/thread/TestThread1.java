@@ -16,7 +16,7 @@ public class TestThread1 extends Thread {
     public void run() {
         // run方法主线程
         for (int i = 0; i < 200; i++) {
-            System.out.println("我在看代码--"+i);
+            System.out.println("============我在看代码--"+i);
         }
     }
 
