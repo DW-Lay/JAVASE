@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket聊天室</title>
+    <style>
+        div {
+            width: 200px;
+            height: 50px;
+            border: #0066FF 1px solid;
+        }
+    </style>
+</head>
+<body>
+<label>
+    <input type="text" placeholder="输入你的内容"/>
+</label>
+<button>发送请求</button>
+    <div>
+    </div>
+    <script>
+        var input = document.querySelector('input')
+        var button = document.querySelector('button')
+        var div = document.querySelector('div');
+
+        // 1.创建websocket
+        // 参数：websocket的服务地址
+        // var socket = new WebSocket('ws://echo.websocket.org')
+        var socket = new WebSocket('ws://localhost:3000')
+        // 2. open：  当前websocket链接成功时触发   注册一个open事件
+        socket.addEventListener('open',function () {
+            div.innerHTML = '链接服务成功了'
+        } )
+
+        // 3.主动给websocket服务发送请求
+        button.addEventListener('click',function () {
+            var value = input.value
+            socket.send(value)
+        })
+
+        // 4. 接收websocket服务的数据    需要注册一个message事件
+        socket.addEventListener('message' ,function (e) {
+            console.log(e.data)
+            div.innerHTML = e.data
+        })
+
+        socket.addEventListener('close',function () {
+            div.innerHTML = '服务断开链接'
+        } )
+    </script>
+</body>
+</html>

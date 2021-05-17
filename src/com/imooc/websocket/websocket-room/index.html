@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket聊天室</title>
+    <style>
+        /*<!--        用来设置div的格式的-->*/
+        /*div {*/
+        /*    width: 200px;*/
+        /*    height: 200px;*/
+        /*    border: #0066FF 1px solid;*/
+        /*}*/
+    </style>
+</head>
+<body>
+<label>
+    <input type="text" placeholder="输入你的内容"/>
+</label>
+<button>发送请求</button>
+    <div>
+    </div>
+    <script>
+        var input = document.querySelector('input')
+        var button = document.querySelector('button')
+        var div = document.querySelector('div');
+
+        // 1.创建websocket
+        var socket = new WebSocket('ws://localhost:3000')
+        // 2. open：  当前websocket链接成功时触发   注册一个open事件
+
+        socket.addEventListener('open',function () {
+            div.innerHTML = '链接服务成功了'
+        } )
+
+        // 3.主动给websocket服务发送请求
+        button.addEventListener('click',function () {
+            var value = input.value
+            socket.send(value)
+            // 每次发送完消息给上一个空，把原来的数据覆盖掉
+            input.value = ''
+        })
+
+        // 4. 接收websocket服务的数据    需要注册一个message事件
+        socket.addEventListener('message' ,function (e) {
+
+            // 使用innerHTML会把原来的内容覆盖掉
+            // console.log(e.data)
+            // div.innerHTML = e.data
+
+            console.log(e.data)
+            var dv = document.createElement('div')
+            dv.innerText = e.data
+            div.appendChild(dv)
+        })
+
+        socket.addEventListener('close',function () {
+            div.innerHTML = '服务断开链接'
+        } )
+    </script>
+</body>
+</html>
