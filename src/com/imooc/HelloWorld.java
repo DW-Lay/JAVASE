@@ -2,6 +2,11 @@ package com.imooc;
 //import com.sun.org.apache.xpath.internal.objects.XString;
 //import com.sun.org.apache.xpath.internal.objects.XStringForChars;
 
+import sun.net.util.IPAddressUtil;
+
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+
 public class HelloWorld {
 /***
  *          .,:,,,                                        .::,,,::.
@@ -42,24 +47,99 @@ public class HelloWorld {
  *                         .,::iiirsssssssssrri;;:.
  */
 
-    public static void main(String[] args) {
-        float d1 = 123456789f;
-        float d2 = d1 + 1;
-        System.out.println("d1=" + d1);
-        System.out.println("d2=" + d2);
-        System.out.println(d1 == d2);
-        char c = 'a';
-        System.out.println("c=" + c);
-        System.out.println('\u0061');
-        int a = 3;
-        a=a++;
-        int b=a++;
+    public static void main(String[] args) throws UnsupportedEncodingException {
 
-        System.out.println("========== "+a);
-        System.out.println("========== "+b);
-        Integer abc;
-        abc = new Integer(3);
-        abc.toString();
+        System.out.println("hello,鲸灵".getBytes("UTF-8").length);
+        System.out.println("hello,鲸灵".getBytes("unicode").length);
+
+    }
+}
+// 因为lru算法实现逻辑中需要实现双向链表，但是双向链表需要自己实现，在此只先写出双向链表的类，具体实现额外再写
+class Node{
+    public int key,val;
+    public  Node next,prev;
+    public Node(int x,int y){
+        this.key =x;
+        this.val = y;
+    }
+}
+class DoubleList{
+    public void addFirst(Node x) {
+
+    }
+     public void remove(Node x){
+
+     }
+
+     public Node removeLast(){
+
+        return new Node(0,0);
+     }
+     public int size(){
+        return 0;
+     }
+
+}
+class LRUCahche{
+    private HashMap<Integer,Node> map;
+    private DoubleList cache;
+    private int cap;
+    public LRUCahche(int capacity){
+        map = new HashMap<>();
+        cache = new DoubleList();
+        this.cap = capacity;
+    }
+
+    public int get(int key){
+        // 查找，如果不存在，直接返回-1
+        if(!map.containsKey(key)){
+            return -1;
+        }
+        // 如果存在，利用put方法把数据提前
+        int val = map.get(key).val;
+        put(key,val);
+        return val;
+    }
+
+    public void put(int key,int val){
+        // 现根据输入的key和val，得到一个Node
+        Node x =new Node(key,val);
+        if(map.containsKey(key)){
+            // 如果存在，删除旧节点，新的插入到头部
+            cache.remove(map.get(key));
+            cache.addFirst(x);
+            // 更新map中对应的数据
+            map.put(key,x);
+        }else{
+            if(cap==cache.size()){
+                // 删除链表的最后一个数据
+                Node last = cache.removeLast();
+                map.remove(last.key);
+            }
+            // 直接插入到头部
+            cache.addFirst(x);
+            map.put(key,x);
+        }
+    }
+}
+
+//        float d1 = 123456789f;
+//        float d2 = d1 + 1;
+//        System.out.println("d1=" + d1);
+//        System.out.println("d2=" + d2);
+//        System.out.println(d1 == d2);
+//        char c = 'a';
+//        System.out.println("c=" + c);
+//        System.out.println('\u0061');
+//        int a = 3;
+//        a=a++;
+//        int b=a++;
+//
+//        System.out.println("========== "+a);
+//        System.out.println("========== "+b);
+//        Integer abc;
+//        abc = new Integer(3);
+//        abc.toString();
 
 //        Scanner input = new Scanner(System.in);
 //
@@ -83,5 +163,5 @@ public class HelloWorld {
 //            System.out.println(strTemp);
 //        }
 
-    }
-}
+//    }
+
