@@ -2,7 +2,7 @@ package com.practice;
 
 /**
  * @program: HelloWorld
- * @description: 笔试算法题
+ * @description: 笔试算法题 测试版
  * @author: 董明林
  * @date: 2021-07-03 11:28:15
  */
@@ -38,32 +38,3 @@ public class practice3 {
     }
 
 }
-
-
-//    public List<List<Integer>> combinationSum3(int k, int n) {
-//        List<List<Integer>> lists = new ArrayList<List<Integer>>();
-//        List<Integer> list = new ArrayList<Integer>();
-//        int sum = 0;
-//
-//        dfs(1, k, n, lists, list, sum);
-//        return lists;
-//    }
-//
-//    private void dfs(int index, int k, int n, List<List<Integer>> lists, List<Integer> list, int sum) {
-//        if(sum >= n || index >= n || list.size() >= k){	//终止条件
-//            if(sum == n && list.size() == k){
-//                lists.add(new ArrayList<>(list));
-//            }
-//            return;
-//        }
-//        else {
-//            for(int i=index; i<n; i++){
-//                list.add(i);
-//                sum += i;
-//                dfs(++index, k, n, lists, list, sum);
-//                sum -= list.get(list.size()-1);
-//                list.remove(list.size()-1);
-//            }
-//        }
-//
-//    }

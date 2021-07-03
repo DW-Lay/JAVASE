@@ -1,23 +1,34 @@
 package com.practice;
 
-import javafx.scene.CacheHint;
 
-import java.util.*;
 
 /**
  * @author Lincoln
- * @classname Practice
- * @description 类的描述
+ * @classname Main
+ * @description 用来作为牛客和赛码网笔试题的模板
  * @params
  * @return
  * @date 2020/7/15 16:32
  */
-public class Practice {
+
+import java.util.*;
+
+public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String team =in.next();
-        int k = in.nextInt();
-        String[] teams = team.split(",");
+
+        // =====================第一种写法=======================
+        StringBuilder sb=new StringBuilder();
+        while(in.hasNext()){
+            sb.append(in.nextLine());
+        }
+        //牛客上这句代码能执行，但是在本地上这句执行不了
+        System.out.println(sb);
+        //====================第二种写法===========================
+        String a =in.next();
+        String b = in.nextLine();
+        int  c = in.nextInt();
+        String[] teams = b.split(",");
         int[] nums = new int[teams.length];
         for(int i=0;i<teams.length;i++){
             String num = teams[i].trim();
@@ -25,20 +36,13 @@ public class Practice {
             nums[i] = Integer.parseInt(num);
         }
         Arrays.sort(nums);
-        int sum = 0;
-        for(int num:nums){
-            sum+=num;
-        }
-        int len = nums.length;
-        if(sum%k==0){
-            for(int i=0;i<len/2;i++){
-                System.out.print(nums[i]+nums[len-1-i]+",");
-            }
-        }
+
 
     }
 
 }
+
+
 
 
 
