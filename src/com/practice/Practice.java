@@ -1,4 +1,4 @@
-package com.imooc;
+package com.practice;
 
 import javafx.scene.CacheHint;
 
