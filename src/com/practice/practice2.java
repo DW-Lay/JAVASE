@@ -1,6 +1,8 @@
 package com.practice;
 
-import java.util.HashSet;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -11,9 +13,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * @return
  * @date 2021/4/30 18:49
  */
-//public class practice2 {
-//    public static void main(String[] args) {
-//
+public class practice2 {
+    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
 //        String str1 = new String("test");
 //        String str2 = new String("test");
 //        String str3 = "test";
@@ -31,5 +33,21 @@ import java.util.concurrent.ConcurrentHashMap;
 //        strings.add(str3);
 //        System.out.println(strings.size());
 //        ConcurrentHashMap con = new ConcurrentHashMap();
-//    }
-//}
+
+//        HashMap map = new HashMap<String,String>();
+//        map.put("name","zhang");
+//        map.put("name",null);
+//        map.put("","lis");
+//        System.out.println(map.size());
+//        System.out.println(map.get("name"));
+//
+//        Hashtable<Object, Object> table = new Hashtable<>();
+//          double i =2.1;
+//          long a =9223372036854775807L;
+        List<Integer> list =  new ArrayList<Integer>();
+        Method method = list.getClass().getMethod("add", Object.class); //要抛出个异常
+        method.invoke(list,"测试");  // 也要抛出异常
+        System.out.println(list.toString());
+
+    }
+}
