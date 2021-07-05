@@ -44,10 +44,20 @@ public class practice2 {
 //        Hashtable<Object, Object> table = new Hashtable<>();
 //          double i =2.1;
 //          long a =9223372036854775807L;
-        List<Integer> list =  new ArrayList<Integer>();
-        Method method = list.getClass().getMethod("add", Object.class); //要抛出个异常
-        method.invoke(list,"测试");  // 也要抛出异常
-        System.out.println(list.toString());
+//        List<Integer> list =  new ArrayList<Integer>();
+//        Method method = list.getClass().getMethod("add", Object.class); //要抛出个异常
+//        method.invoke(list,"测试");  // 也要抛出异常
+//        System.out.println(list.toString());
+        Integer int1 = 1;
+        Integer int2= new Integer(1);
+        Integer int3 =2-1;
+        Integer int4 = 200;
+        Integer int5 = 200;
+        int int6=200;
+        System.out.println(int1==int2);
+        System.out.println(int1==int3);
+        System.out.println(int4==int5);
+        System.out.println(int4==int6);
 
     }
 }
