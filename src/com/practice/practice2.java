@@ -62,6 +62,21 @@ public class practice2 {
         return count;
     }
 
+    public int petalsBreak2(int[] petals) {
+        // write code here
+        if(petals==null ||petals.length==0){
+            return 0;
+        }
+        int sum=0;
+        int n= petals.length;
+        for (int i = 0; i <n ; i++) {
+            int a =  petals[i]/2;
+            int b = petals[i]%2;
+            if(b>a)a++;
+            sum +=a;
+        }
+        return  sum;
+    }
     public String compressString(String param) {
         // write code here
         StringBuilder stringBuilder = new StringBuilder();
