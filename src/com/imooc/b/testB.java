@@ -16,6 +16,7 @@ public class testB extends teatA {
     }
 
 
+
     public static void main(String[] args) {
         new testB().test3();
 

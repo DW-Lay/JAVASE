@@ -15,4 +15,10 @@ public class teatA {
     public void test2(){
         System.out.println("2222");
     }
+    private void test4(){
+        System.out.println("44444");
+    }
+    public void test5(){
+        System.out.println("5555");
+    }
 }
