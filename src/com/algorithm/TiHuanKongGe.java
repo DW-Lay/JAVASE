@@ -23,9 +23,29 @@ public class TiHuanKongGe {
         }
         return out.toString();
     }
+    public class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) {
+            val = x;
+        }
+    }
 
     public String replaceSpace2(StringBuffer str) {
         return str.toString().replaceAll(" ","%20");
+    }
+
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null) return head;
+        ListNode pre=null,cur = head;
+        while(cur!=null){
+            ListNode after = cur.next;
+            cur.next =pre;
+            pre = cur;
+            cur = after;
+        }
+        return pre;
+
     }
 
 

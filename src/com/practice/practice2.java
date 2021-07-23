@@ -18,12 +18,27 @@ public class practice2 {
 //        System.out.println(new practice2().compressString("aabcccccaaa"));
 //        int[] p  =  {4,2,1};
 //        System.out.println(new practice2().petalsBreak(p));
-        int[][]rooms= {{-2,-3,3},{-5,-10,1},{10,30,-5}};
-        int[] start = {0,0};
-        int[] end  ={2,2};
-        System.out.println(new practice2().minimumInitHealth(rooms, start, end));
+//        int[][]rooms= {{-2,-3,3},{-5,-10,1},{10,30,-5}};
+//        int[] start = {0,0};
+//        int[] end  ={2,2};
+//        System.out.println(new practice2().minimumInitHealth(rooms, start, end));
+//        String str = "abc"+ new String("def");
+//        //        System.out.println(str);
+//        String str1 = "def";
+//        String str2 = "abcdef";
+//        String str3 = "abc"+"def";
+//        String str33 = "abc"+str1;
+//        String str4 = new String("abcdef");
+//        System.out.println(str33==str2);
+
+//        Map<Integer,Character> map   =  new HashMap<>();
+//        ConcurrentHashMap<Object, Object> objectObjectConcurrentHashMap = new ConcurrentHashMap<>();
 
     }
+
+
+
+
 
 
     public int minimumInitHealth(int[][] rooms, int[] startPoint, int[] endPoint) {
