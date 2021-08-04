@@ -57,11 +57,72 @@ public class practice2 {
 
 //       int[] nums ={10,11,12,13,1};
 //       System.out.println(findDuiZi(nums));
-         int[][] books = {{20210427,20210504},{20210425,20210504},{20210425,20210504},{20210425,20210501},{20210425,20210501},{20210427,20210502}};
-         int[][] books2 ={{20210425,20210504}};
-        System.out.println(sort(books2));
+//         int[][] books = {{20210427,20210504},{20210425,20210504},{20210425,20210504},{20210425,20210501},{20210425,20210501},{20210427,20210502}};
+//         int[][] books2 ={{20210425,20210504}};
+//        System.out.println(sort(books2));
+//        Stack<Integer> in = new Stack<>();
+
+        Integer initBbj = Integer.valueOf(args[args.length-1]);
+        int i  = initBbj.intValue();
+        System.out.println(args.length);
+        String a ="a";
+        Integer b = 1;
+
+
 
     }
+
+    public static  void test(){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        int[] pos = new int[n];
+        for(int i=0;i<n;i++){
+            pos[i] = sc.nextInt();
+        }
+        Stack<Integer> in = new Stack<Integer>();
+        int max = 0;
+        for(int i=1;i<n;i++){
+            max = Math.max(max,pos[i]-pos[i-1]);
+            in.push(pos[i]-pos[i-1]);
+        }
+        while(k>0){
+            if(max==1){
+                break;
+            }
+            Stack<Integer> out = new Stack<Integer>();
+            boolean flag = false;
+            while(!in.isEmpty()){
+                int temp = in.pop();
+                if(temp==max && !flag){
+                    if(temp%2==1){
+                        out.push(temp/2);
+                        out.push(temp/2+1);
+                        max =temp/2+1;
+                        flag=true;
+
+                    }else{
+                        out.push(temp/2);
+                        out.push(temp/2);
+                        max =temp/2;
+                        flag=true;
+
+                    }
+                }else{
+                    out.push(temp);
+                    max = Math.max(temp,max);
+                }
+            }
+            while(!out.isEmpty()){
+                in.push(out.pop());
+            }
+            k--;
+        }
+        System.out.println(max);
+
+    }
+
+
     public static int sort(int[][] books){
 
         if(books.length<1){
