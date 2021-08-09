@@ -62,13 +62,184 @@ public class practice2 {
 //        System.out.println(sort(books2));
 //        Stack<Integer> in = new Stack<>();
 
-        Integer initBbj = Integer.valueOf(args[args.length-1]);
-        int i  = initBbj.intValue();
-        System.out.println(args.length);
-        String a ="a";
-        Integer b = 1;
+//        Integer initBbj = Integer.valueOf(args[args.length-1]);
+//        int i  = initBbj.intValue();
+//        System.out.println(args.length);
+//        String a ="a";
+//        Integer b = 1;
+//        System.out.println(calTime());
+//        System.out.println(Math.min(Integer.MAX_VALUE+1,10));
+//        int[][] grid = {{0,6,0},{5,8,7},{0,9,0}};
+//        System.out.println(getMaximumResource(grid));
+//        ArrayList<Integer> list = new ArrayList<>();
+//        list.size();
+//        System.out.println(0b10); // 2进制
+//        System.out.println(010);  // 8进制
+//        System.out.println(10);  // 10进制
+//        System.out.println(0x10); // 16进制
+
+    }
+
+    // times   [start,end,port] [start,end,port] ....
+    public int  Solution3(int[][] times){
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        // 直接指定一个固定的map.这样天然有序
+        for(int i=0;i<24*3600;i++){
+            map.put(i,0);
+        }
+        for(int i=0;i<times.length;i++){
+            map.put(times[i][0],map.get(times[i][0])+1);
+            map.put(times[i][1],map.get(times[i][0])-1);
+        }
+
+        int max = map.get(0);
+        int temp =max;
+        for(int i =1;i<map.size();i++){
+            temp = map.get(i)+temp;
+            max = Math.max(max,temp);
+        }
+        return max;
+    }
+
+    // times   [start,end,port] [start,end,port] ....
+    public int  Solution2(int[][] times){
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<times.length;i++){
+            map.put(times[i][0],map.getOrDefault(1,map.get(times[i][0]))+1);
+            map.put(times[i][1],map.getOrDefault(-1,map.get(times[i][0]))-1);
+        }
+        List<Map.Entry<Integer,Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(map.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Integer>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Integer> entry1, Map.Entry<Integer, Integer> entry2) {
+                return entry1.getKey()-entry2.getKey();
+            }
+        });
+        int max =list.get(0).getValue();
+        int temp = max;
+        for(int i =1;i<list.size();i++){
+            temp = list.get(i).getValue()+temp;
+            max = Math.max(max,temp);
+        }
+        return max;
+    }
 
 
+    // times   [start,end,port] [start,end,port] ....
+    public int  Solution1(int[][] times){
+        int res =0;
+        Arrays.sort(times, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                return t1[0]-t2[0];
+            }
+        });
+        int max = 0;
+        for(int i=0;i<times.length;i++){
+            res+=times[i][0];
+            res -= times[i][1];
+            max = Math.max(res,max);
+        }
+        return max;
+    }
+
+
+
+    public static int getMaximumResource (int[][] grid) {
+        // write code here
+        int m = grid.length;
+        int n = grid[0].length;
+        if(m==0 && n==0 ){
+            return 0;
+        }
+        int res = 0;
+        boolean[][] flag = new boolean[m][n];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]!=0){
+                    res = Math.max(start(grid,flag,i,j,0),res);
+                }
+            }
+        }
+        return res;
+    }
+
+    public static int start(int[][] grid,boolean[][] flag,int i, int j,int res){
+        if(i<0 || i>=grid.length || j<0 || j>=grid[0].length || grid[i][j]==0 || flag[i][j]==true){
+            return res;
+        }
+        else{
+            res += grid[i][j];
+            flag[i][j] = true;
+            int temp=res;
+            res = Math.max(start(grid,flag,i+1,j,temp),start(grid,flag,i-1,j,temp));
+            res = Math.max(start(grid,flag,i,j+1,temp),res);
+            res = Math.max(start(grid,flag,i,j-1,temp),res);
+            flag[i][j] = false;
+            return res;
+        }
+
+    }
+
+
+    public static int calTime(){
+        Scanner sc = new Scanner(System.in);
+        int max = 6;
+//        int n = sc.nextInt();
+//        int t1 = sc.nextInt();
+//        max = Math.max(max,t1);
+//        int t2 = sc.nextInt();
+//        max = Math.max(max,t2);
+//        int t3 = sc.nextInt();
+//        max = Math.max(max,t3);
+//        int t4 = sc.nextInt();
+//        max = Math.max(max,t4);
+//
+//        int[] hs1 = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            hs1[i] = sc.nextInt();
+//        }
+
+        int n = 6;
+        int t1 = 1;
+        int t2 = 4;
+        int t3 = 3;
+        int t4 = 1;
+        int[] hs1 = {1,1,2,3,6,1};
+        System.out.println("t1="+t1);
+        System.out.println("t2="+t2);
+        System.out.println("t3="+t3);
+        System.out.println("t4="+t4);
+        System.out.println(Arrays.toString(hs1));
+        int[] hs2 = new int[n];
+        for (int i = 0; i <n ; i++) {
+            hs2[i] = 4-hs1[i];
+        }
+
+        int[][] dp = new int[n][2];
+        for (int i = 1; i <n; i++) {
+            // 相等
+             if(hs1[i]==hs1[i-1]){
+                 dp[i][0] = Math.min(dp[i-1][0]+t1,Integer.MAX_VALUE);
+                 dp[i][1] = Math.min(dp[i-1][1]+t1,Integer.MAX_VALUE);
+             }else if(hs1[i]>hs1[i-1]+1){ // 爬坡都爬不了
+                 dp[i][0] = Integer.MAX_VALUE-max;
+                 dp[i][1] = Math.min(dp[i-1][0]+t4+t3,dp[i-1][1]+t3);
+             }else if(hs1[i]<hs1[i-1]-1) {  // 平行世界爬坡不了
+                 dp[i][0] = Math.min(dp[i-1][0]+t3,dp[i-1][1]+t4+t3);
+                 dp[i][1] = Integer.MAX_VALUE-max;
+             }else if(hs1[i]==hs1[i-1]+1){ // 爬坡 1
+                 dp[i][0] = Math.min(dp[i-1][0]+t2,dp[i-1][1]+t4+t2);
+                 dp[i][1] = Math.min(dp[i-1][1]+t3,dp[i-1][0]+t4+t3);
+             }else if(hs1[i] ==hs1[i-1]-1){ // 下跳
+                 dp[i][0] = Math.min(dp[i-1][0]+t3,dp[i-1][1]+t4+t3);
+                 dp[i][1] = Math.min(dp[i-1][1]+t2,dp[i-1][0]+t4+t2);
+             }
+        }
+        return Math.min(dp[n-1][0],dp[n-1][1]);
 
     }
 
