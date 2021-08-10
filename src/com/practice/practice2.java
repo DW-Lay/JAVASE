@@ -77,8 +77,214 @@ public class practice2 {
 //        System.out.println(010);  // 8进制
 //        System.out.println(10);  // 10进制
 //        System.out.println(0x10); // 16进制
+//        int[][] grids ={{1, 1, 1, 2}};
+//        System.out.println(new practice2().categoryOfMaxWarehouseArea(grids));
+        System.out.println(Arrays.toString(numberOfShelves(4)));
 
     }
+    // diyiti
+    public String decompress (String str) {
+        StringBuilder buf = new StringBuilder();
+        Deque<Integer> stack =new LinkedList<>();
+        int i =0;
+        int j=0;
+        int len = str.length();
+        while(i<len){
+            char c = str.charAt(i);
+            if(c=='('){
+                stack.push(buf.length());
+                i++;
+            }
+            else if(c>='a' && c<='z'){
+                buf.append(c);
+                i++;
+            }
+            else if(c>='0' && c<='9'){
+                j=i;
+                while(i<len && str.charAt(i)>='0' && str.charAt(i)<='9'){
+                    i++;
+                }
+                buf.append(repeat(buf.substring(buf.length()-1),Integer.parseInt(str.substring(j,i))-1));
+            }
+            else if(c==')'){
+                i++;
+                j=i;
+                while(i<len && str.charAt(i)>='0' && str.charAt(i)<='9'){
+                    i++;
+                }
+                buf.append(repeat(buf.substring(stack.pop()),Integer.parseInt(str.substring(j,i))-1));
+            }
+        }
+        return buf.toString();// write code here
+    }
+    private String repeat(String str,int n){
+        int i;
+        StringBuilder ans;
+        ans = new StringBuilder();
+        for( i=0;i<n;i++){
+            ans.append(str);
+        }
+        return ans.toString();
+    }
+
+
+
+
+    // dierti
+    public int purchase (int[] nums, int budget) {
+        int mod = 1_000_000_007;
+        int ans =0;
+        Arrays.sort(nums);
+        int left =0,right = nums.length-1;
+        while(left<right){
+            if(nums[left]+nums[right]>budget){
+                right--;
+            }else{
+                ans+=(right-left);
+                left++;
+            }
+            ans %=mod;
+        }
+        return ans%mod;
+        // write code here
+    }
+
+
+    //  disanti
+    public int max_consistent_book_size (int[][] books) {
+        // write code here
+        if(books.length<1){
+            return 0;
+        }
+        if(books.length==1){
+            return 1;
+        }
+        Arrays.sort(books, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] t1, int[] t2) {
+                if(t1[0]==t2[0]){
+                    return t1[1]-t2[1];
+                }else{
+                    return t1[0]-t2[0];
+                }
+            }
+        });
+        System.out.println(Arrays.deepToString(books));
+        int n =books.length;
+        int[] dp = new int[n];
+
+        dp[1]=1;
+        for(int i=1;i<n;i++){
+            if(books[i][1]>=books[i-1][1]){
+                dp[i] =dp[i-1]+1;
+            }else{
+                int j =i-1;
+                while(j>=0){
+                    if(books[i][1]>=books[j][1]){
+                        dp[i] = Math.max(dp[i-1],dp[j]+1);
+                        break;
+                    }
+                    if(books[i][0]>books[j][1]){
+                        dp[i] =dp[i-1];
+                        break;
+                    }
+                    j--;
+                }
+            }
+        }
+        return dp[n-1]+1;
+    }
+
+
+    // disiti
+    public int[] numberOfShelves (int N) {
+        // write code here
+        if(N==1){
+            return new int[]{1};
+        }
+        int[][] matrix = new int[N][N];
+        int n = N;
+        int bottom = n-1;
+        int right = n-1;
+        int top =0;
+        int left =0;
+        int num =1;
+        while(top<=bottom && left <=right){
+            for(int row= top;row<=bottom;row++){
+                matrix[row][left] = num;
+                System.out.println("row="+row+" col="+left+ " num="+num);
+                ++num;
+            }
+            for(int col = left+1,row = bottom-1;col<=right && row>=0;col++,row--){
+                matrix[row][col] = num;
+                System.out.println("row="+row+" col="+col+ " num="+num);
+                ++num;
+            }
+            for(int col = right-1;col>left;col--){
+                matrix[top][col] = num;
+                System.out.println("row="+top+" col="+col+ " num="+num);
+                ++num;
+            }
+            System.out.println("============");
+            top++;
+            bottom-=2;
+            left++;
+            right-=2;
+        }
+        System.out.println(Arrays.deepToString(matrix));
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        for(int i=0;i<matrix.length;i++){
+            for(int j=0;j<matrix[0].length;j++){
+                if(matrix[i][j]!=0){
+                    list.add(matrix[i][j]);
+                }
+            }
+        }
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+
+    }
+
+    // diwuti
+    public int categoryOfMaxWarehouseArea (int[][] grid) {
+        // write code here
+
+        int max = 0;
+        int res =1;
+        for (int i = 0; i < grid.length; i++) {
+            for(int j =0;j<grid[0].length;j++){
+                int target = grid[i][j];
+                int temp = dfs(grid,i,j,target);
+                System.out.println("target="+target+" res ="+temp);
+                if(max <= temp ){
+                    max = temp;
+                    res = target;
+                }
+            }
+        }
+        return res;
+    }
+
+    public int dfs(int[][] grids,int i,int j,int target){
+        if(i<0 || j<0 || i>=grids.length || j>=grids[0].length || grids[i][j] !=target){
+            return 0;
+        }
+        int temp = grids[i][j];
+        grids[i][j]=0;
+        int[] di = {0,0,1,-1};
+        int[] dj = {1,-1,0,0};
+        int ans =1;
+        for(int index=0;index<4;++index){
+            int next_i = i+di[index];
+            int next_j = j+dj[index];
+            ans+=dfs(grids,next_i,next_j,target);
+        }
+        grids[i][j] = temp;
+        return ans;
+    }
+
+
+
+
 
     // times   [start,end,port] [start,end,port] ....
     public int  Solution3(int[][] times){
@@ -107,8 +313,8 @@ public class practice2 {
 
         HashMap<Integer, Integer> map = new HashMap<>();
         for(int i=0;i<times.length;i++){
-            map.put(times[i][0],map.getOrDefault(1,map.get(times[i][0]))+1);
-            map.put(times[i][1],map.getOrDefault(-1,map.get(times[i][0]))-1);
+            map.put(times[i][0],map.getOrDefault(map.get(times[i][0]),0)+1);
+            map.put(times[i][1],map.getOrDefault(map.get(times[i][1]),0)-1);
         }
         List<Map.Entry<Integer,Integer>> list = new ArrayList<Map.Entry<Integer, Integer>>(map.entrySet());
 
