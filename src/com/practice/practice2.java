@@ -1,5 +1,7 @@
 package com.practice;
 
+import com.imooc.array.A;
+
 import javax.xml.bind.SchemaOutputResolver;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -79,9 +81,313 @@ public class practice2 {
 //        System.out.println(0x10); // 16进制
 //        int[][] grids ={{1, 1, 1, 2}};
 //        System.out.println(new practice2().categoryOfMaxWarehouseArea(grids));
-        System.out.println(Arrays.toString(numberOfShelves(4)));
+//        System.out.println(Arrays.toString(numberOfShelves(4)));
+//          int[] index = {1,1,2, 2,2,2,2,1, 1, 2, 2, 2, 2,2};
+//          int k = 2;
+//          int n = index.length;
+//          test1(index,n,k);
+//        System.out.println(Integer.toBinaryString('0'));
+//        test222();
+//        System.out.println(NS_String("cbcb",2));
+          long[] a = FarmerNN(4,6);
+        for (int i = 0; i < a.length; i++) {
+            System.out.println(a[i]);
+        }
+
 
     }
+
+    public static  long section (int[] a, int t) {
+        // write code here
+        long res =0;
+        int n = a.length;
+        if(n<=1){
+            return 0;
+        }
+        boolean[][] dp = new boolean[n][n];
+        for(int i=0;i<n-1;i++){
+            if((a[i]^a[i+1])!=t){
+                res++;
+            }else{
+                dp[i][i+1]=true;
+            }
+        }
+
+        for(int i=2;i<n;i++){
+            for(int j=0;j<n-i;j++){
+                if((a[j]^a[j+i])!=t &&(!dp[j][j+i-1])&&(!dp[j+1][j+i])){
+                    res++;
+                }else{
+                    dp[j][j+i]=true;
+                }
+            }
+        }
+        return res;
+
+
+    }
+
+
+    public static long[] FarmerNN (int n, long m) {
+        // write code here
+
+        long[] a = new long[n];
+        long tempM = m-1;
+        long row = tempM/(n-1);
+        Arrays.fill(a,row);
+        long last = (tempM%(n-1));
+        m =last;
+        if(row%2==0){
+            while(true){
+                int i=0;
+                while(m>0 && i<n){
+                    a[i]+=1;
+                    i++;
+                    m--;
+                }
+                if(m==0){
+                    return a;
+                }
+                i=n-2;
+                while(m>0 && i>0){
+                    a[i]+=1;
+                    m--;
+                    i--;
+                }
+                if(m==0){
+                    return a;
+                }
+            }
+        }else if(row%2==1){
+            while(true){
+                int i=0;
+                while(m>0 && i<n){
+                    a[i]+=1;
+                    i++;
+                    m--;
+                }
+                if(m==0){
+                    return a;
+                }
+                i=n-2;
+                while(m>0 && i>0){
+                    a[i]+=1;
+                    m--;
+                    i--;
+                }
+                if(m==0){
+                    return a;
+                }
+            }
+        }
+        return a;
+    }
+
+
+    public static String NS_String (String s, int k) {
+
+        // write code here
+        if(k==0){
+            return s;
+        }
+        HashMap<Integer, Character> map = new HashMap<>();
+        char[] array = s.toCharArray();
+        for(int i =0;i<array.length;i++){
+            map.put(i,array[i]);
+        }
+        List<Map.Entry<Integer,Character>> list = new ArrayList<Map.Entry<Integer, Character>>(map.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<Integer, Character>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Character> entry1, Map.Entry<Integer, Character> entry2) {
+                return entry1.getValue()-entry2.getValue();
+            }
+        });
+
+        char temp = list.get(0).getValue();
+        int count =1;
+        int i=1;
+        while(count<=k){
+            while(i<list.size() && (temp == list.get(i).getValue())){
+                i++;
+                System.out.println("temp="+temp);
+            }
+            if(i>=list.size()){
+                return null;
+            }
+            temp = list.get(i).getValue();
+            count++;
+        }
+        System.out.println("i="+i);
+        List<Map.Entry<Integer,Character>> list2 = new ArrayList<Map.Entry<Integer, Character>>();
+        for(int j =i;j<list.size();j++){
+//            System.out.println("list2.value="+list.get(j).getValue());
+            list2.add(list.get(j));
+        }
+//        for(int b=0;b<list2.size();b++){
+//            System.out.println(list2.get(b).getValue());
+//        }
+        Collections.sort(list2, new Comparator<Map.Entry<Integer, Character>>() {
+            @Override
+            public int compare(Map.Entry<Integer, Character> entry1, Map.Entry<Integer, Character> entry2) {
+                return entry1.getKey()-entry2.getKey();
+            }
+        });
+        StringBuilder sb = new StringBuilder();
+        for(int m=0;m<list2.size();m++){
+            sb.append(list2.get(m).getValue());
+        }
+        return sb.toString();
+
+
+    }
+
+    public static void test222(){
+//        Scanner sc = new Scanner(System.in);
+//        String s = sc.next();
+        String s ="306";
+        char[] digits = new char[11];
+        digits[0] = 0x3f;
+        digits[1] = 0x06;
+        digits[2] = 0x5b;
+        digits[3] = 0x4f;
+        digits[4] = 0x66;
+        digits[5] = 0x6d;
+        digits[6] = 0x7d;
+        digits[7] = 0x07;
+        digits[8] = 0x7f;
+        digits[9] = 0x6f;
+        digits[10] = 0x00;
+        int n = s.length();
+        if(n==0){
+            return;
+        }else if(n==1){
+            int count =0;
+            System.out.println(transfer((char)0x3a,s.charAt(0),digits));
+            return;
+        }else if(n>1){
+            int  cwd =1;  // 窗口大小
+            while(cwd<=s.length()){
+                int i =0;
+                int j =i+cwd;
+                int count =0;
+                char[] nums = new char[cwd];
+                Arrays.fill(nums,(char) 0x3a);
+                while(j<=s.length()){
+                    count +=calTransfer(s.substring(i,j),nums,digits);
+                    nums = s.substring(i,j).toCharArray();
+
+                    i++;
+                    j++;
+                }
+                System.out.println(count);
+                cwd++;
+            }
+
+        }
+    }
+
+    public static int calTransfer(String s1,char[] nums,char[] digits){
+        int n = s1.length();
+
+        char[] arr = s1.toCharArray();
+        if(arr.length!=nums.length){
+            System.out.println("error");
+        }
+        int count =0;
+        for(int i=0;i<n;i++){
+//            System.out.println("nums["+i+"]="+nums[i]+" arr["+i+"]="+arr[i]);
+            count += transfer(nums[i],arr[i],digits);
+        }
+        return count;
+    }
+
+    public static int transfer(char num1,char num2,char[] digits){
+
+//        System.out.println("num1="+num1+" num2="+num2);
+//        System.out.println("0="+(int)'0');
+//
+        System.out.println(" ");
+        System.out.println("originNum="+num1+" toNum="+num2);
+        System.out.println("digits1="+digits[num1-'0']+" digits2="+digits[num2-'0']);
+        System.out.println("digits1="+Integer.toBinaryString(digits[num1-'0'])+" digits2="+Integer.toBinaryString(digits[num2-'0']));
+        int temp = (digits[num1-'0']^digits[num2-'0']);
+//        System.out.println("temp="+Integer.toBinaryString(temp));
+        int count =0;
+        while(temp!=0){
+            temp &=(temp-1);
+            count++;
+        }
+        System.out.println("count ="+count);
+        return count;
+
+    }
+
+
+
+
+
+    public static void test1(int[] index,int n,int k){
+//        Scanner sc = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        int k = sc.nextInt();
+//        int[] index = new int[n];
+//        for(int i=0;i<n;i++){
+//            index[i] = sc.nextInt();
+//        }
+
+        int[] sum = new int[n];
+        sum[0] = index[0];
+        for(int i=1;i<n;i++){
+            sum[i] = sum[i-1]+index[i];
+        }
+        double maxAvg = 0;
+        int left = 0;
+        int right = 0;
+        int maxLength = 0;
+        for(int j=k;j<=n;j++){
+            double tempAvg = 1.0*sum[j-1]/j;
+            System.out.println("tempAvg0 ="+tempAvg);
+            if(tempAvg>=maxAvg){
+                maxAvg = tempAvg;
+                maxLength = j;
+                left = 0;
+                right = j-1;
+                System.out.println("i=0,j="+right);
+                System.out.println("maxLength="+maxLength);
+            }
+        }
+        System.out.println("===============================");
+        for(int i=1;i<=n-k;i++){
+            for(int j=i+k;j<=n;j++){
+                int tempLength = j-i;
+
+                double tempAvg = 1.0*(sum[j-1]-sum[i-1])/(j-i);
+                System.out.println("i="+i+" j="+(j-1));
+                System.out.println("tempLength="+tempLength);
+                System.out.println("maxLength="+maxLength);
+                System.out.println("tempAvg="+tempAvg);
+                if(tempAvg>=maxAvg ){
+                    if(tempAvg==maxAvg && tempLength>maxLength){
+                        maxLength = tempLength;
+                        maxAvg = tempAvg;
+                        left =i;
+                        right = j-1;
+                    }else if(tempAvg>maxAvg){
+                        maxLength = tempLength;
+                        maxAvg = tempAvg;
+                        left =i;
+                        right = j-1;
+                    }
+
+                }
+            }
+        }
+        System.out.println(left+" "+right);
+
+
+    }
+
     // diyiti
     public String decompress (String str) {
         StringBuilder buf = new StringBuilder();
