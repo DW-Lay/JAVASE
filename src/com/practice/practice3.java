@@ -8,6 +8,7 @@ package com.practice;
  */
 public class practice3 {
     public int sum;
+    int x=1;
 
     public static void main(String[] args) {
         int i = new practice3().combinationSum3();

@@ -11,40 +11,98 @@ package com.practice;
  * @date 2020/7/15 16:32
  */
 
+import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-
-        // =====================第一种写法=======================
-        StringBuilder sb=new StringBuilder();
-        while(in.hasNext()){
-            sb.append(in.nextLine());
-        }
-        //牛客上这句代码能执行，但是在本地上这句执行不了
-        System.out.println(sb);
-        //====================第二种写法===========================
-        String a =in.next();
-        String b = in.nextLine();
-        int  c = in.nextInt();
-        String[] teams = b.split(",");
-        int[] nums = new int[teams.length];
-        for(int i=0;i<teams.length;i++){
-            String num = teams[i].trim();
-//            System.out.println(num);
-            nums[i] = Integer.parseInt(num);
-        }
-        Arrays.sort(nums);
-
+class Solution {
+    /* Write Code Here */
+    private static int[][] f;
+    private static List<String> ans = new ArrayList<String>();
+    private static int n;
+    private static int res = 0;
+    public static int partitionNumber(String text) {
+        n = text.length();
+        f = new int[n][n];
+        dfs(text, 0);
+        return res;
 
     }
+    public static void dfs(String s, int i) {
+        if (i == n) {
+            res ++;
+            return;
+        }
+        for (int j = i; j < n; ++j) {
+            if (longestDecomposition(s.substring(i,j+1)) >= 1) {
+                ans.add(s.substring(i, j + 1));
+                dfs(s, j + 1);
+                ans.remove(ans.size() - 1);
+            }
+        }
+    }
 
+    public static int longestDecomposition(String text) {
+        int resultCount = 0;
+
+        int n = text.length();
+        int frontStringFrontIndex = 0;
+        int frontStringRearIndex = 0;
+        int rearStringFrontIndex = n - 1;
+        int rearStringRearIndex = n - 1;
+
+        int i, j;
+        char charFront, charRear;
+        boolean isValid;
+
+        while(frontStringRearIndex < rearStringFrontIndex) {
+            isValid = true;
+
+            for (i = frontStringFrontIndex, j = rearStringFrontIndex; i <= frontStringRearIndex && j <= rearStringRearIndex; i++, j++) {
+                charFront = text.charAt(i);
+                charRear = text.charAt(j);
+                if(charFront != charRear) {
+                    isValid = false;
+                    break;
+                }
+            }
+
+            if(isValid) {
+                resultCount += 2;
+                frontStringFrontIndex = frontStringRearIndex + 1;
+                frontStringRearIndex = frontStringFrontIndex;
+                rearStringRearIndex = rearStringFrontIndex - 1;
+                rearStringFrontIndex = rearStringRearIndex;
+            } else {
+                frontStringRearIndex++;
+                rearStringFrontIndex--;
+            }
+        }
+
+        if(frontStringFrontIndex <= rearStringRearIndex) {
+            resultCount++;
+        }
+
+        return resultCount;
+    }
 }
 
+public class Main {
+    public static void main(String[] args){
+        Scanner in = new Scanner(System.in);
+        int res;
 
+        String _text;
+        try {
+            _text = in.nextLine();
+        } catch (Exception e) {
+            _text = null;
+        }
 
+        res = new Solution().partitionNumber(_text);
+        System.out.println(String.valueOf(res));
 
+    }
+}
 
 
 
