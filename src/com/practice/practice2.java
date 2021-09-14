@@ -17,7 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/4/30 18:49
  */
 
-
+class TreeNode{
+    int num_child;
+    int value;
+    int sum;
+    int[] child =new int[2];
+}
 public class practice2   {
 
     public static void main(String[] args) {
@@ -122,7 +127,621 @@ public class practice2   {
 //        }
 //        test09041();
 //        test09042("merchant");
-        test09051();
+//        test09051();
+//          test09102();
+//        test09111();
+//        int[] array = {1, 2, 30, 4, 5, 6, 7, 8, 9, 10};
+//        int[] res = subArraySum(array,10,3);
+//        System.out.println(te());
+        System.out.println(nonghang1("AABC"));
+    }
+
+
+    static  int res =0;
+    public static int nonghang1(String str){
+        int n = str.length();
+        int[] flag = new int[n];
+        dfs(str,0,res,flag);
+        return res;
+    }
+
+    public static void dfs(String str,int index,int ans,int[] flag){
+        if(index ==str.length()){
+            return;
+        }
+        HashSet<Character> set = new HashSet<>();
+        for(int i=0;i<str.length();i++){
+            if(flag[i]==0 && !set.contains(str.charAt(i))){
+                res++;
+                set.add(str.charAt(i));
+//                System.out.println(set);
+                flag[i]=1;
+                dfs(str,index+1,ans,flag);
+                flag[i]=0;
+            }
+        }
+    }
+
+    public static  int te(){
+        int[] nums = {2,4,5,15};
+        int n = nums.length;
+        for(int i=0;i<n-1;i++){
+            if(gcd1(nums[i],nums[0]) && gcd1(nums[n-1],nums[i+1])){
+                return  2;
+            }
+        }
+        for(int i=n-1;i>0;i--){
+            if(isOk(i,n-1,res,nums) && isOk(0,i-1,res,nums)){
+                return res;
+            }
+        }
+        return 3;
+    }
+    public  static  boolean isOk(int start, int end, int res,int[] nums){
+        if(end==nums.length-1){
+            res++;
+            return gcd1(nums[start],nums[end]);
+        }
+        return true;
+    }
+
+    public static boolean gcd1(int num1, int num2) {
+        int temp = num1 % num2;
+        while (temp != 0) {
+            num1 = num2;
+            num2 = temp;
+            temp = num1 % num2;
+        }
+        return num2>1? true:false;
+    }
+
+        public static void  test09123(){
+            Scanner sc = new Scanner(System.in);
+            String s = sc.nextLine().trim();
+            s = s.substring(2,s.length()-2);
+            String[] split = s.split(", ");
+            int[][] nums = new int[split.length][2];
+            for(int i=0;i<split.length;i++){
+                nums[i][0] = split[i].charAt(1);
+                nums[i][1] = split[i].charAt(3);
+            }
+            if(nums.length==0) System.out.println(0);
+            Arrays.sort(nums,new Comparator<int[]>(){
+                public int compare(int[] num1,int[] num2){
+                    if(num1[1]>num2[1]){
+                        return 1;
+                    }else if(num1[1]<num2[1]){
+                        return -1;
+                    }else{
+                        return 0;
+                    }
+                }
+            });
+            int count = 1;
+            for(int i=1;i<nums.length;i++){
+                if(nums[i][0]<nums[i-1][1]){
+                    nums[i][1] = Math.min(nums[i][1],nums[i-1][1]);
+                }else{
+                    count++;
+                }
+            }
+            System.out.println(nums.length-count);
+
+        }
+    public static void test09121(){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxNum = 0;
+        for(int i=1;i<=n;i++){
+            int res = getNum(i);
+            map.put(res,map.getOrDefault(res,0)+1);
+            if(map.get(res)>maxNum){
+                maxNum = map.get(res);
+            }
+        }
+        int count =0;
+        for(Integer key:map.keySet()){
+            if(map.get(key)==maxNum){
+                count++;
+            }
+        }
+        System.out.println(count);
+    }
+
+
+    public static int getNum(int n){
+        int res =0;
+        while(n!=0){
+            res += (n%10);
+            n  = n/10;
+        }
+        return res;
+    }
+
+    public int getTeams (int[] heros) {
+        // write code here
+        Arrays.sort(heros);
+        int n = heros.length;
+        if(heros[0]!=0 || heros[n-1]!=4){
+            return 0;
+        }
+        HashMap<Integer,Integer> map = new HashMap<>();
+        map.put(0,0);
+        map.put(1,0);
+        map.put(2,0);
+        map.put(3,0);
+        map.put(4,0);
+        for(int i=0;i<n;i++){
+            map.put(heros[i],map.getOrDefault(heros[i],0)+1);
+        }
+        int res = map.get(0)*map.get(1)*map.get(2)*map.get(3)*map.get(4);
+        return res;
+    }
+
+    public static int[] subArraySum (int[] Array, int arrayLen, int subArrayLen) {
+        // write code here
+        int[] sums = new int[Array.length];
+        sums[0] = Array[0];
+        int n =Array.length;
+        for(int i=1;i<n;i++){
+            sums[i] = sums[i-1]+Array[i];
+        }
+        int k = subArrayLen;
+        int max = sums[k-1];
+        int index = 0;
+        for(int i=k;i<n;i++){
+            int ans = sums[i]-sums[i-k];
+            if(max<ans){
+                max = ans;
+                index = i-k+1;
+            }
+        }
+        return new int[]{index,max};
+    }
+
+    public static void test09111(){
+        int[] arg = {1,1,4,6,7,7,3};
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for(int i=0;i<arg.length;i++){
+            if(map.getOrDefault(arg[i],0)==0){
+                map.put(arg[i],1);
+            }else{
+                map.remove(arg[i]);
+            }
+        }
+
+
+        List<Integer> list = new ArrayList<>();
+        for(int i=0;i<arg.length;i++){
+            if(map.containsKey(arg[i])){
+                list.add(arg[i]);
+            }
+        }
+        int[] res = new int[list.size()];
+        for (int i = 0; i <list.size() ; i++) {
+            res[i] = list.get(i);
+        }
+        System.out.println(Arrays.toString(res));
+
+
+    }
+
+
+    static int[][] nums;
+    public static void test09102(){
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int c = sc.nextInt();
+        int d = sc.nextInt();
+        int q = sc.nextInt();
+        nums = new int[2][2];
+        nums[0][0] =a;
+        nums[0][1] =b;
+        nums[1][1] =c;
+        nums[1][0] =d;
+        for(int i=0;i<q;i++){
+            int x =sc.nextInt();
+            int y =sc.nextInt();
+            nums = getMatrix(nums,x,y,a,b,c,d);
+        }
+
+    }
+
+    public static int[][] getMatrix(int[][] nums,int x,int y,int a,int b,int c,int d){
+        int n =nums.length;
+        System.out.println(Arrays.deepToString(nums));
+
+        int[][] res = new int[n*2][n*2];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                res[i][j] = nums[i][j];
+            }
+        }
+        for(int i=0;i<n;i++){
+            for(int j=n;j<2*n;j++){
+                res[i][j] = nums[i][j-n]+b;
+            }
+        }
+        for(int i=n;i<2*n;i++){
+            for(int j=0;j<n;j++){
+                res[i][j] = nums[i-n][j]+d;
+            }
+        }
+        for(int i=n;i<2*n;i++){
+            for(int j=n;j<2*n;j++){
+                res[i][j] = nums[i-n][j-n]+c;
+            }
+        }
+
+        System.out.println(res[x-1][y-1]);
+        nums = new int[n*2][n*2];
+        nums = res;
+        System.out.println(Arrays.deepToString(nums));
+        return nums;
+
+    }
+
+
+    public static void test090101(){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        for(int m=0;m<t;m++){
+            int a =sc.nextInt();
+            int b =sc.nextInt();
+            int sum = b-a;
+            for(int i=1;i<1000;i++){
+                int[]nums = new int[i];
+                for(int j=0;j<i;j++){
+                    nums[j] = j+1;
+                }
+                if(isOk( nums,sum,0)){
+                    System.out.println(i);
+                    break;
+                }
+            }
+        }
+
+    }
+    public static boolean isOk(int[] nums,int sum,int start){
+        if(start==nums.length){
+            if(sum==0) return true;
+            else return false;
+        }else{
+            return isOk(nums,sum+nums[start],start+1) || isOk(nums,sum-nums[start],start+1);
+        }
+    }
+
+    /*
+
+    class TreeNode{
+    int num_child;
+    int value;
+    int sum;
+    int[] child =new int[2];
+}
+     */
+    static int sum=0;
+    static HashMap<Integer,TreeNode> map =new HashMap<>();
+    public static int calSum(int root){
+
+        int res = map.get(root).value;
+        for(int i=0;i<map.get(root).num_child;i++){
+            int x =calSum(map.get(root).child[i]);
+            res+=x;
+        }
+        map.get(root).sum =res;
+        return res;
+    }
+    public static void test09081(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        boolean[] isRoot = new boolean[n];
+        int root =0;
+        Arrays.fill(isRoot,true);
+//        TreeNode temp = new TreeNode();
+        for(int i=0;i<n;i++){
+            int num = sc.nextInt();
+            TreeNode temp = new TreeNode();
+            temp.num_child=0;
+            temp.value = num;
+            map.put(i,temp); //先默认无子节点
+            sum+=num;
+        }
+        for(int i=0;i<n-1;i++){
+            int father =sc.nextInt();
+            int child = sc.nextInt();
+            isRoot[child] = false;
+            map.get(father).child[map.get(father).num_child++]=child;
+        }
+        for(int i=0;i<n;i++){
+            if(isRoot[i]){
+                root=i;
+                break;
+            }
+        }
+        calSum(root);
+        int maxNum=0;
+        int index =0;
+
+        for(Map.Entry<Integer,TreeNode> entry: map.entrySet()){
+            int chaZhi = 2*entry.getValue().sum-sum;
+            if(maxNum<Math.abs(chaZhi)){
+                maxNum = Math.abs(chaZhi);
+                index = entry.getKey();
+            }
+            else if(maxNum == Math.abs(chaZhi) && entry.getKey()<index){
+                index = entry.getKey();
+            }
+        }
+        System.out.println(index);
+
+    }
+    public static void test09082_2() {
+        Scanner sc = new Scanner(System.in);
+        String s1 = sc.nextLine();
+//        String s1 = "3,3";
+        String[] str1 = s1.split(",");
+        int m = Integer.parseInt(str1[0]);
+        int n = Integer.parseInt(str1[1]);
+        String s2 = sc.nextLine();
+//        String s2 = "3 2 2 0 1 0 1 1 1";
+        String[] str2 = s2.split(" ");
+        int[][] nums = new int[m][n];
+        int count = 0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                nums[i][j] = Integer.parseInt(str2[count++]);
+            }
+        }
+        int[][] dp = new int[m][n];
+        Arrays.fill(dp,Integer.MAX_VALUE);
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    dp[i][j]=0;
+                    continue;
+                }
+                for(int k =0;k<i;++k){
+                    if(i-k <= nums[k][j])
+                        dp[i][j] = Math.min(dp[i][j],dp[k][j]==Integer.MAX_VALUE? Integer.MAX_VALUE-1:dp[k][j]+1);
+                }
+                for(int k = 0;k<j;++k){
+                    if(j-k <=nums[i][k])
+                        dp[i][j] = Math.min(dp[i][j],dp[i][k]==Integer.MAX_VALUE?Integer.MAX_VALUE-1:dp[i][k]+1);
+                }
+            }
+        }
+        int res = dp[m-1][n-1]==Integer.MAX_VALUE?-1:dp[m-1][n-1];
+
+        System.out.println(res);
+
+    }
+
+/*
+import java.util.*;
+public class Main{
+    static int countNum =Integer.MAX_VALUE;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String s1 = sc.nextLine();
+        String[] str1 = s1.split(",");
+        int m = Integer.parseInt(str1[0]);
+        int n = Integer.parseInt(str1[1]);
+        String s2 = sc.nextLine();
+        String[] str2 = s2.split(" ");
+        int[][] nums = new int[m][n];
+        int count = 0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                nums[i][j] = Integer.parseInt(str2[count]);
+                count++;
+            }
+        }
+        findRoute(nums,0,0,0);
+        if(countNum==Integer.MAX_VALUE){
+            System.out.println(-1);
+            return;
+        }
+        System.out.println(countNum);
+    }
+
+      public static void findRoute(int[][] nums,int i,int j,int res){
+        if(i>=nums.length || j>=nums[0].length || nums[i][j]==0){
+            return ;
+        }
+        if(i==nums.length-1 && j==nums[0].length-1){
+            countNum = Math.min(res,countNum);
+            return ;
+        }
+        if(res>=countNum){
+            return;
+        }
+        int num = nums[i][j];
+        for(int k=num;k>=1;k--){
+            findRoute(nums,i+k,j,res+1);
+            findRoute(nums,i,j+k,res+1);
+        }
+        return ;
+
+    }
+}
+ */
+    static int countNum =Integer.MAX_VALUE;
+    public static void test09082() {
+//        Scanner sc = new Scanner(System.in);
+//        String s1 = sc.nextLine();
+        String s1 = "3,3";
+        String[] str1 = s1.split(",");
+        int m = Integer.parseInt(str1[0]);
+        int n = Integer.parseInt(str1[1]);
+//        String s2 = sc.nextLine();
+        String s2 = "3 2 2 0 1 0 1 1 1";
+        String[] str2 = s2.split(" ");
+        int[][] nums = new int[n][m];
+        int count = 0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                nums[i][j] = Integer.parseInt(str2[count++]);
+            }
+        }
+        findRoute(nums,0,0,0);
+        System.out.println(countNum);
+
+    }
+
+    public static void findRoute(int[][] nums,int i,int j,int res){
+        if(i>=nums.length || j>=nums[0].length || nums[i][j]==0){
+            return ;
+        }
+        if(i==nums.length-1 && j==nums[0].length-1){
+
+            countNum = Math.min(res,countNum);
+            System.out.println("i="+i+" j="+j+" res="+res+ " count ="+countNum);
+            return ;
+        }
+        int num = nums[i][j];
+
+        for(int k=1;k<=num;k++){
+            findRoute(nums,i+k,j,res+1);
+            findRoute(nums,i,j+k,res+1);
+        }
+        return ;
+
+    }
+
+
+
+
+
+    public static void test09073(){
+        Scanner sc = new Scanner(System.in);
+        int n =sc.nextInt();
+        int k =sc.nextInt();
+        System.out.println(3);
+
+    }
+
+    public static void test09072(){
+        Scanner sc = new Scanner(System.in);
+        int t =Integer.parseInt(sc.nextLine());
+        for(int i=0;i<t;i++){
+            System.out.println(getMaxNum(sc.nextLine()));
+        }
+    }
+    public  static long getMaxNum(String num1){
+        ArrayList<Integer> list = new ArrayList<>();
+
+        long num = Long.parseLong(num1);
+        while(num!=0){
+            int temp = (int)(num%10);
+            list.add(temp);
+            num /= 10;
+        }
+        int n =list.size();
+        long res =0;
+        boolean flag = false;
+        for(int i =n-1;i>=0;i--){
+            int temp = list.get(i);
+            if(temp>=3 || flag){
+                res = res*10+3;
+            }else if(temp==2){
+                res = res*10+2;
+            }else if(temp==1){
+                res = res*10+1;
+            }else if(temp==0 && !flag ){
+                res =res/10;
+                res = res*10+3;
+                flag = true;
+            }
+        }
+        return res;
+
+    }
+
+
+
+
+
+    public static void test09071(){
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+        int[][] origin = new int[n][n];
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                origin[i][j] = sc.nextInt();
+            }
+        }
+        int[][] nums = new int[n*k][n*k];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                for(int m = 0;m<k;m++){
+                    for(int p = 0;p<k;p++){
+                        nums[i*k+m][j*k+p] = origin[i][j];
+                    }
+                }
+
+            }
+        }
+        for(int i=0;i<nums.length;i++){
+            for(int j=0;j<nums.length;j++){
+                System.out.print(nums[i][j]+" ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    public static void test1234(){
+        int  k = 4;
+        int[] nums = {4,6,2,5,4,7,8,9,9,8};
+        int n = nums.length;
+
+//        Scanner sc = new Scanner(System.in);
+//        String s1 =sc.nextLine();
+//        int n = Integer.parseInt(s1.split(" ")[0]);
+//        int k = Integer.parseInt(s1.split(" ")[1]);
+//        int[] nums = new int[n];
+//        String s2 = sc.nextLine();
+//        String[] arr = s2.split(" ");
+//        for(int i=0;i<n;i++){
+//            nums[i] = Integer.parseInt(arr[i]) ;
+//        }
+
+        int count = 0;
+        int res = 0;
+        int start =0;
+        int end = n-k;
+        while(count<k){
+            int[] temp = getMax(nums,start,end);
+            start = temp[1]+1;
+            res = res*10+temp[0];
+            count++;
+            end = n-k+count;
+        }
+        System.out.println(res);
+
+
+    }
+
+    public static int[] getMax(int[] nums,int start,int end){
+
+        if(end>=nums.length){
+            end = nums.length-1;
+        }
+        int max = nums[start];
+        int index = start;
+        for(int i=start;i<=end;i++){
+            if(max<nums[i]){
+                max = nums[i];
+                index = i;
+            }
+        }
+        return new int[]{max,index};
 
     }
 
